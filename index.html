@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        .wrap{
+            width: 340px;
+            height: 340px;
+            border: 2px solid #cccccc;
+            /* margin: 0 auto; */
+           
+        }
+        .choose{
+            width: 100%;
+            height: 100%;
+            background: url(./part2-bg.png);
+            position: relative;
+        }
+        .pointer{
+            width: 30%;
+            height: 30%;
+            background: url(./pointer.png) no-repeat;
+            background-size: 100% 100%;
+            position: absolute;
+            left: 50%;
+            top: 50%;
+            margin-left: -15%;
+            margin-top: -15%;
+            transition: transform 6.5s;
+            transition-timing-function: ease;
+        }
+    </style>
+    <script src="https://cdn.staticfile.org/jquery/1.10.2/jquery.min.js"></script>
+</head>
+<body>
+    <div class="wrap">
+        <div class="choose">
+            <div class="pointer" id="pointer">
+
+            </div>
+        </div>
+        
+    </div>
+    
+</body>
+<script>
+    $(document).ready(function(){
+        var btn = $("#pointer");
+        var options = {
+
+        };
+        var isEnd = false;
+        options.gifts = {
+        "1":{
+            id : "1",
+            name : "理财金2000元",
+            angleStart : -30,
+            angleEnd : 30,
+            tips : "恭喜您获得理财金2000元~~"
+        },
+        "2":{
+            id : "2",
+            name : "谢谢参与",
+            angleStart : 31,
+            angleEnd : 90,
+            tips : "很遗憾没有能中奖，再试一次吧~"
+        },
+        "3":{
+            id : "3",
+            name : "理财金5200元",
+            angleStart : 91,
+            angleEnd : 150,
+            tips : "恭喜您获得理财金5200元~~"
+        },
+        "4":{
+            id : "4",
+            name : "京东E卡",
+            angleStart : 151,
+            angleEnd : 210,
+            tips : "恭喜您抽中京东E卡一张~"
+        },
+        "5":{
+            id : "5",
+            name : "谢谢参与",
+            angleStart : 211,
+            angleEnd : 270,
+            tips : "很遗憾没有能中奖，再试一次吧~"
+        },
+        "6":{
+            id : "6",
+            name : "理财金1000元",
+            angleStart : 271,
+            angleEnd : 330,
+            tips : "恭喜您获得理财金1000元~~"
+        }
+    };
+
+//获取[n,m]的随机整数
+    function getRandom(n,m){
+        var num = Math.floor(Math.random() * (m - n + 1) + n);
+        return num;
+    }
+    function _begin(){
+        
+        var base = 360 * 6;
+        var result = getRandom(330,-30);
+        var _key = 3;//内定奖品id
+        if(_key){
+            result = getRandom(options.gifts[_key].angleStart,options.gifts[_key].angleEnd)
+        }
+        var deg = base+result;
+        console.log("deg",deg);
+        btn.css({"transform":"rotate("+deg+"deg)"})
+
+        btn.on('transitionend',function(){
+            for(var k in options.gifts){
+                if(options.gifts[k].angleStart <= result && result <= options.gifts[k].angleEnd){
+                    console.log(options.gifts[k].tips)
+                    confirm(options.gifts[k].tips);
+                    
+                    window.location.reload();
+                }
+            }
+        })
+
+
+    }
+
+
+
+        btn.on("click",_begin);
+    })
+</script>
+</html>
